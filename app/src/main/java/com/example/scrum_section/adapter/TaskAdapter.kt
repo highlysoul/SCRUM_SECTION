@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scrum_section.R
 import com.example.scrum_section.EditTaskDialog
+import com.example.scrum_section.TaskDetailDialog  // ✅ tambahkan ini
 import com.example.scrum_section.model.Task
 import com.example.scrum_section.util.TaskStatus
 import com.example.scrum_section.data.TaskRepository
@@ -87,6 +88,15 @@ class TaskAdapter(private var tasks: List<Task>) :
                     notifyItemChanged(position)
                 }
                 editDialog.show(it.supportFragmentManager, "edit_task")
+            }
+        }
+
+        // 🟢 Klik di mana pun pada item -> buka dialog detail task
+        holder.itemView.setOnClickListener {
+            val activity = holder.itemView.context as? FragmentActivity
+            activity?.let {
+                val detailDialog = TaskDetailDialog(task)
+                detailDialog.show(it.supportFragmentManager, "task_detail")
             }
         }
     }
