@@ -28,14 +28,18 @@ class AddTaskDialog(private val onTaskAdded: () -> Unit) : DialogFragment() {
             if (name.isNotEmpty()) {
                 val newTask = Task(
                     id = TaskRepository.getTasks().size + 1,
-                    name = "$name ($department - $deadline)",
-                    status = TaskStatus.TODO // default saat ditambahkan
+                    name = name,
+                    createdBy = "You", // atau bisa diubah sesuai user login nanti
+                    deadline = deadline,
+                    department = department,
+                    status = TaskStatus.TODO
                 )
                 TaskRepository.addTask(newTask)
                 onTaskAdded()
                 dismiss()
             }
         }
+
 
         return dialog
     }

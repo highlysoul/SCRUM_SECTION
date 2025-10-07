@@ -4,23 +4,31 @@ import com.example.scrum_section.model.Task
 import com.example.scrum_section.util.TaskStatus
 
 object TaskRepository {
-    private val tasks = mutableListOf(
-        Task(1, "Design UI Login", TaskStatus.TODO),
-        Task(2, "Implement RecyclerView", TaskStatus.IN_PROGRESS),
-        Task(3, "Fix Adapter Binding", TaskStatus.DONE)
-    )
+    private val tasks = mutableListOf<Task>()
 
     fun getTasks(): List<Task> = tasks
-
-    fun getTasksByStatus(status: TaskStatus): List<Task> {
-        return tasks.filter { it.status == status }
-    }
 
     fun addTask(task: Task) {
         tasks.add(task)
     }
 
-    fun updateTaskStatus(id: Int, newStatus: TaskStatus) {
-        tasks.find { it.id == id }?.status = newStatus
+    fun updateTask(index: Int, updatedTask: Task) {
+        tasks[index] = updatedTask
+    }
+
+    fun getTasksByStatus(status: TaskStatus): List<Task> {
+        return if (status == TaskStatus.ALL) {
+            tasks
+        } else {
+            tasks.filter { it.status == status }
+        }
+    }
+
+    // Contoh data awal
+    init {
+        tasks.add(Task(1, "Design UI", "Reza", "2025-10-07", "Frontend", TaskStatus.TODO))
+        tasks.add(Task(2, "Setup Database", "Hansen", "2025-10-10", "Backend", TaskStatus.IN_PROGRESS))
+        tasks.add(Task(3, "Integrate API", "Reza", "2025-10-12", "Backend", TaskStatus.TO_VERIFY))
+        tasks.add(Task(4, "Testing", "Hansen", "2025-10-15", "QA", TaskStatus.DONE))
     }
 }

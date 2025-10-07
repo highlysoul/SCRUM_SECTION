@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.scrum_section.R
 import com.example.scrum_section.adapter.TaskAdapter
 import com.example.scrum_section.data.TaskRepository
 import com.example.scrum_section.util.TaskStatus
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ScrumFragment : Fragment() {
-
     private lateinit var adapter: TaskAdapter
-    private var currentStatus = TaskStatus.TODO
+    private var currentStatus = TaskStatus.ALL // default ke Task
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -34,7 +32,11 @@ class ScrumFragment : Fragment() {
             }.show(parentFragmentManager, "AddTaskDialog")
         }
 
-        // Tab buttons
+        // tombol tab
+        view.findViewById<View>(R.id.btnAll).setOnClickListener {
+            currentStatus = TaskStatus.ALL
+            refreshData()
+        }
         view.findViewById<View>(R.id.btnToDo).setOnClickListener {
             currentStatus = TaskStatus.TODO
             refreshData()
