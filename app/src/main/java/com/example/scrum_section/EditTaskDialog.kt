@@ -27,6 +27,10 @@ class EditTaskDialog(private val task: Task, private val onUpdated: () -> Unit) 
             task.name = etName.text.toString()
             task.deadline = etDeadline.text.toString()
             task.department = etDepartment.text.toString()
+
+            // 🔹 Update ke repository
+            TaskRepository.updateTask(task)
+
             onUpdated()
             dismiss()
         }

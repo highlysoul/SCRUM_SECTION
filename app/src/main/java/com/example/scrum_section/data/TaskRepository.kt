@@ -12,8 +12,17 @@ object TaskRepository {
         tasks.add(task)
     }
 
+    // Versi lama (biarin tetap ada kalau ada kode lain yang masih pakai index)
     fun updateTask(index: Int, updatedTask: Task) {
         tasks[index] = updatedTask
+    }
+
+    // 🔹 Versi baru (biar kompatibel sama adapter kamu)
+    fun updateTask(updatedTask: Task) {
+        val index = tasks.indexOfFirst { it.id == updatedTask.id }
+        if (index != -1) {
+            tasks[index] = updatedTask
+        }
     }
 
     fun getTasksByStatus(status: TaskStatus): List<Task> {
