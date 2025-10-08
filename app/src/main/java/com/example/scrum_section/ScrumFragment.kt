@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scrum_section.adapter.TaskAdapter
@@ -16,6 +13,7 @@ import com.example.scrum_section.util.TaskStatus
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ScrumFragment : Fragment() {
+
     private lateinit var adapter: TaskAdapter
     private var currentStatus = TaskStatus.ALL
     private var fullTaskList = listOf<com.example.scrum_section.model.Task>()
@@ -38,14 +36,45 @@ class ScrumFragment : Fragment() {
             }.show(parentFragmentManager, "AddTaskDialog")
         }
 
-        // 🔹 Tab status
-        view.findViewById<View>(R.id.btnAll).setOnClickListener { currentStatus = TaskStatus.ALL; refreshData() }
-        view.findViewById<View>(R.id.btnToDo).setOnClickListener { currentStatus = TaskStatus.TODO; refreshData() }
-        view.findViewById<View>(R.id.btnInProgress).setOnClickListener { currentStatus = TaskStatus.IN_PROGRESS; refreshData() }
-        view.findViewById<View>(R.id.btnToVerify).setOnClickListener { currentStatus = TaskStatus.TO_VERIFY; refreshData() }
-        view.findViewById<View>(R.id.btnDone).setOnClickListener { currentStatus = TaskStatus.DONE; refreshData() }
+        // 🔸 Tombol status
+        val btnAll = view.findViewById<Button>(R.id.btnAll)
+        val btnToDo = view.findViewById<Button>(R.id.btnToDo)
+        val btnInProgress = view.findViewById<Button>(R.id.btnInProgress)
+        val btnToVerify = view.findViewById<Button>(R.id.btnToVerify)
+        val btnDone = view.findViewById<Button>(R.id.btnDone)
 
-        // 🔹 SearchView
+        val buttons = listOf(
+            btnAll to TaskStatus.ALL,
+            btnToDo to TaskStatus.TODO,
+            btnInProgress to TaskStatus.IN_PROGRESS,
+            btnToVerify to TaskStatus.TO_VERIFY,
+            btnDone to TaskStatus.DONE
+        )
+
+        fun selectButton(selected: TaskStatus) {
+            buttons.forEach { (btn, status) ->
+                val color = if (status == selected)
+                    requireContext().getColor(R.color.redw)
+                else when (status) {
+                    TaskStatus.TODO -> requireContext().getColor(R.color.blue)
+                    TaskStatus.IN_PROGRESS -> requireContext().getColor(R.color.orange)
+                    TaskStatus.TO_VERIFY -> requireContext().getColor(R.color.purple)
+                    TaskStatus.DONE -> requireContext().getColor(R.color.green)
+                    else -> requireContext().getColor(R.color.gray)
+                }
+                btn.backgroundTintList = android.content.res.ColorStateList.valueOf(color)
+            }
+        }
+
+        buttons.forEach { (btn, status) ->
+            btn.setOnClickListener {
+                currentStatus = status
+                refreshData()
+                selectButton(status)
+            }
+        }
+
+        // 🔍 SearchView
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -55,7 +84,7 @@ class ScrumFragment : Fragment() {
             }
         })
 
-        // 🔹 Spinner Sort
+        // 🔽 Spinner Sort
         val spinnerSort = view.findViewById<Spinner>(R.id.spinnerSort)
         val sortOptions = arrayOf("Terbaru", "Terlama", "A-Z", "Z-A")
         spinnerSort.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions).apply {
@@ -63,14 +92,14 @@ class ScrumFragment : Fragment() {
         }
 
         spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, itemId: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
                 filterAndSort(searchView.query.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-
+        selectButton(TaskStatus.ALL)
         return view
     }
 

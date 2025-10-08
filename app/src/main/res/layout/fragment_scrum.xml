@@ -1,64 +1,100 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:background="@color/white">
 
-    <!-- Tabs -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btnAll"
-            android:text="Task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="6dp"/>
-
-        <Button android:id="@+id/btnToDo" android:text="To Do" style="@style/TabButton"/>
-        <Button android:id="@+id/btnInProgress" android:text="In Progress" style="@style/TabButton"/>
-        <Button android:id="@+id/btnToVerify" android:text="To Verify" style="@style/TabButton"/>
-        <Button android:id="@+id/btnDone" android:text="Done" style="@style/TabButton"/>
-    </LinearLayout>
-
-    <!-- Search & Sort -->
+    <!-- 🔸 Sort & Search Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
-
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:queryHint="Cari tugas..." />
+        android:padding="8dp"
+        android:background="#FFE4B3"> <!-- cream -->
 
         <Spinner
             android:id="@+id/spinnerSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp" />
+            android:backgroundTint="@color/orange"
+            android:layout_marginEnd="6dp" />
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_bg"
+            android:queryHint="Search"
+            android:iconifiedByDefault="false"
+            android:layout_marginStart="6dp"/>
     </LinearLayout>
 
+    <!-- 🔸 Custom Button Tabs -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:background="@android:color/white"
+        android:paddingVertical="4dp">
+
+        <LinearLayout
+            android:id="@+id/statusButtonsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnAll"
+                style="@style/TabButtonStyle"
+                android:text="All"
+                android:backgroundTint="@color/redw"/>
+
+            <Button
+                android:id="@+id/btnToDo"
+                style="@style/TabButtonStyle"
+                android:text="To Do"
+                android:backgroundTint="@color/blue"/>
+
+            <Button
+                android:id="@+id/btnInProgress"
+                style="@style/TabButtonStyle"
+                android:text="In Progress"
+                android:backgroundTint="@color/orange"/>
+
+            <Button
+                android:id="@+id/btnToVerify"
+                style="@style/TabButtonStyle"
+                android:text="To Verify"
+                android:backgroundTint="@color/purple"/>
+
+            <Button
+                android:id="@+id/btnDone"
+                style="@style/TabButtonStyle"
+                android:text="Done"
+                android:backgroundTint="@color/green"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 🔸 RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginTop="4dp" />
 
+    <!-- 🔸 Floating Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/redw"
         android:src="@drawable/ic_add"
-        android:contentDescription="Add Task"/>
+        android:contentDescription="Add Task" />
 </LinearLayout>

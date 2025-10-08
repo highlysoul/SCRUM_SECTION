@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scrum_section.R
 import com.example.scrum_section.EditTaskDialog
-import com.example.scrum_section.TaskDetailDialog  // ✅ tambahkan ini
+import com.example.scrum_section.TaskDetailDialog
 import com.example.scrum_section.model.Task
 import com.example.scrum_section.util.TaskStatus
 import com.example.scrum_section.data.TaskRepository
