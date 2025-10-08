@@ -2,6 +2,7 @@ package com.example.scrum_section
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
@@ -40,6 +41,11 @@ class AddTaskDialog(private val onTaskAdded: () -> Unit) : DialogFragment() {
             }
         }
 
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.8).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         return dialog
     }
