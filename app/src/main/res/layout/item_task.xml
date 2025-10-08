@@ -52,20 +52,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
             android:text="Status"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            android:layout_marginBottom="6dp"/>
+            android:background="@drawable/bg_status"
+            android:layout_marginEnd="6dp"/>
 
         <ImageView
             android:id="@+id/btnChangeStatus"

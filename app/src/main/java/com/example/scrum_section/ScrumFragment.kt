@@ -11,6 +11,7 @@ import com.example.scrum_section.adapter.TaskAdapter
 import com.example.scrum_section.data.TaskRepository
 import com.example.scrum_section.util.TaskStatus
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 
 class ScrumFragment : Fragment() {
 
@@ -36,45 +37,47 @@ class ScrumFragment : Fragment() {
             }.show(parentFragmentManager, "AddTaskDialog")
         }
 
-        // 🔸 Tombol status
-        val btnAll = view.findViewById<Button>(R.id.btnAll)
-        val btnToDo = view.findViewById<Button>(R.id.btnToDo)
-        val btnInProgress = view.findViewById<Button>(R.id.btnInProgress)
-        val btnToVerify = view.findViewById<Button>(R.id.btnToVerify)
-        val btnDone = view.findViewById<Button>(R.id.btnDone)
-
-        val buttons = listOf(
-            btnAll to TaskStatus.ALL,
-            btnToDo to TaskStatus.TODO,
-            btnInProgress to TaskStatus.IN_PROGRESS,
-            btnToVerify to TaskStatus.TO_VERIFY,
-            btnDone to TaskStatus.DONE
+        // --- Setup TabLayout ---
+        val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
+        val tabData = listOf(
+            "All" to R.color.gray,
+            "To Do" to R.color.blue,
+            "In Progress" to R.color.orange,
+            "To Verify" to R.color.purple,
+            "Done" to R.color.green
         )
 
-        fun selectButton(selected: TaskStatus) {
-            buttons.forEach { (btn, status) ->
-                val color = if (status == selected)
-                    requireContext().getColor(R.color.redw)
-                else when (status) {
-                    TaskStatus.TODO -> requireContext().getColor(R.color.blue)
-                    TaskStatus.IN_PROGRESS -> requireContext().getColor(R.color.orange)
-                    TaskStatus.TO_VERIFY -> requireContext().getColor(R.color.purple)
-                    TaskStatus.DONE -> requireContext().getColor(R.color.green)
-                    else -> requireContext().getColor(R.color.gray)
+        tabData.forEach { (title, colorRes) ->
+            val tab = tabLayout.newTab().setText(title)
+            tab.view.setBackgroundColor(requireContext().getColor(colorRes))
+            tabLayout.addTab(tab)
+        }
+
+        // 🔴 Garis bawah merah di bawah tab (pakai cara aman untuk semua versi)
+        tabLayout.setSelectedTabIndicatorColor(requireContext().getColor(R.color.redw))
+        tabLayout.setSelectedTabIndicatorHeight(6)
+        tabLayout.setSelectedTabIndicatorGravity(TabLayout.INDICATOR_GRAVITY_BOTTOM)
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // Garis bawah tetap merah
+                tabLayout.setSelectedTabIndicatorColor(requireContext().getColor(R.color.redw))
+
+                currentStatus = when (tab?.position) {
+                    1 -> TaskStatus.TODO
+                    2 -> TaskStatus.IN_PROGRESS
+                    3 -> TaskStatus.TO_VERIFY
+                    4 -> TaskStatus.DONE
+                    else -> TaskStatus.ALL
                 }
-                btn.backgroundTintList = android.content.res.ColorStateList.valueOf(color)
-            }
-        }
-
-        buttons.forEach { (btn, status) ->
-            btn.setOnClickListener {
-                currentStatus = status
                 refreshData()
-                selectButton(status)
             }
-        }
 
-        // 🔍 SearchView
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
+        // --- SearchView setup ---
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -84,7 +87,7 @@ class ScrumFragment : Fragment() {
             }
         })
 
-        // 🔽 Spinner Sort
+        // --- Spinner Sort setup ---
         val spinnerSort = view.findViewById<Spinner>(R.id.spinnerSort)
         val sortOptions = arrayOf("Terbaru", "Terlama", "A-Z", "Z-A")
         spinnerSort.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions).apply {
@@ -99,7 +102,6 @@ class ScrumFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        selectButton(TaskStatus.ALL)
         return view
     }
 
