@@ -3,11 +3,12 @@ package com.example.scrum_section
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.scrum_section.data.TaskRepository
 import com.example.scrum_section.model.Task
-import com.example.scrum_section.util.TaskStatus
 
 class EditTaskDialog(private val task: Task, private val onUpdated: () -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -25,15 +26,23 @@ class EditTaskDialog(private val task: Task, private val onUpdated: () -> Unit) 
         btnAdd.text = "Update"
 
         btnAdd.setOnClickListener {
-            task.name = etName.text.toString()
-            task.deadline = etDeadline.text.toString()
-            task.department = etDepartment.text.toString()
+            val newName = etName.text.toString().trim()
+            val newDeadline = etDeadline.text.toString().trim()
+            val newDept = etDepartment.text.toString().trim()
 
-            // 🔹 Update ke repository
-            TaskRepository.updateTask(task)
+            if (newName.isNotEmpty()) {
+                task.name = newName
+                task.deadline = newDeadline
+                task.department = newDept
 
-            onUpdated()
-            dismiss()
+                TaskRepository.updateTask(task)
+                Toast.makeText(requireContext(), "Task updated succesfully!", Toast.LENGTH_SHORT).show()
+
+                onUpdated()
+                dismiss()
+            } else {
+                Toast.makeText(requireContext(), "Task's name not allowed empty!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         dialog.window?.setLayout(

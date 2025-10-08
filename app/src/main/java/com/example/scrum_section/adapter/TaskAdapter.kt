@@ -42,6 +42,7 @@ class TaskAdapter(private var tasks: List<Task>) :
         holder.tvStatus.text = task.status.name.replace("_", " ")
 
         fun applyStatusColor(status: TaskStatus) {
+            val context = holder.tvStatus.context
             val colorRes = when (status) {
                 TaskStatus.TODO -> R.color.blue
                 TaskStatus.IN_PROGRESS -> R.color.orange
@@ -49,7 +50,8 @@ class TaskAdapter(private var tasks: List<Task>) :
                 TaskStatus.DONE -> R.color.green
                 else -> R.color.gray
             }
-            holder.tvStatus.setBackgroundResource(colorRes)
+            val color = context.getColor(colorRes)
+            holder.tvStatus.background.setTint(color)
         }
 
         applyStatusColor(task.status)

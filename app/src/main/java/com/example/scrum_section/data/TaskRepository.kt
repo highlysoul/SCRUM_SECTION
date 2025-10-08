@@ -37,9 +37,9 @@ object TaskRepository {
 
     // Contoh data awal
     init {
-        tasks.add(Task(1, "Design UI", "Reza", "2025-10-07", "Frontend", TaskStatus.TODO))
-        tasks.add(Task(2, "Setup Database", "Hansen", "2025-10-10", "Backend", TaskStatus.IN_PROGRESS))
-        tasks.add(Task(3, "Integrate API", "Reza", "2025-10-12", "Backend", TaskStatus.TO_VERIFY))
-        tasks.add(Task(4, "Testing", "Hansen", "2025-10-15", "QA", TaskStatus.DONE))
+        tasks.add(Task(1, "Design UI", "Reza", "7 Oktober 2025", "Frontend", TaskStatus.TODO))
+        tasks.add(Task(2, "Setup Database", "Hansen", "8 Oktober 2025", "Backend", TaskStatus.IN_PROGRESS))
+        tasks.add(Task(3, "Integrate API", "Reza", "9 Oktober 2025", "Backend", TaskStatus.TO_VERIFY))
+        tasks.add(Task(4, "Testing", "Hansen", "10 Oktober 2025", "QA", TaskStatus.DONE))
     }
 }
